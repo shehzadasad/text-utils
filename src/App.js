@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Navbar from './Components/Navbar'
+import React, { useState } from 'react'
+import './App.css'
+import TextForm from 'Components/TextForm'
+import About from 'Components/About'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 function App() {
+  const toggleModeFunc = () => {
+    if (mode === 'light') {
+      setMode('dark')
+      document.body.style.backgroundColor = 'grey'
+    } else if (mode === 'dark') {
+      setMode('light')
+      document.body.style.backgroundColor = 'white'
+    }
+  }
+  const [mode, setMode] = useState('light')
+  const [active, setActive] = useState(1)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Router>
+        <Navbar title={'TextUtils'} mode={mode} toggleMode={toggleModeFunc} />
+        <Routes>
+          <Route
+            // @ts-ignore
+            exact
+            path="/about"
+            element={
+              <div className="py-3">
+                <About mode={mode} pageTitle="TextUtils - About" isActive="2" />
+              </div>
+            }
+          />
+
+          <Route
+            // @ts-ignore
+            exact
+            path="/"
+            element={
+              <div className="py-3">
+                <TextForm
+                  title={'Enter Text Here To Analyze'}
+                  mode={mode}
+                  pageTitle="TextUtils - Home"
+                  isActive="1"
+                />
+              </div>
+            }
+          />
+        </Routes>
+      </Router>
+    </>
+  )
 }
 
-export default App;
+export default App
